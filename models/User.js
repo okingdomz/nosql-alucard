@@ -1,11 +1,13 @@
 const { Schema, model } = require('mongoose');
 
-const userSchema = new Schema(
+
+// may need to change types of array to the ObjectId
+const UserSchema = new Schema(
     {
         username: { type: String, Unique: true, required: true, trimmed: true},
-        thoughts: [{ type: Schema.Types.Array, ref: 'thought',}],
+        thoughts: [{ type: Schema.Types.ObjectId, ref: 'Thought',}],
         email: { type: String, required: true, unique: true},
-        friends: [{ type: Schema.Types.Array, ref: 'thought',}],
+        friends: [{ type: Schema.Types.ObjectId, ref: 'User',}],
     },
     {
         toJSON: {
@@ -14,14 +16,14 @@ const userSchema = new Schema(
         id: false,
     }
 );
-
-userSchema
+// virtual friend count, retrieves the users friend count in query
+UserSchema
     .virtual('friendCount')
     .get(function () {
-        const numberOfFriends = this.friends.length;
-        return numberOfFriends
+        return this.friends.length
+        
     })
 
-    const User = model('user', userSchema);
+    const User = model('User', UserSchema);
 
     module.exports = User;

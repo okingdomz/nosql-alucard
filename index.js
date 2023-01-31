@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require('./config/connection');
-const routes = require('./controllers/userController');
+const routes = require('./routes');
 
 // const cwd = process.cwd();
 
@@ -13,7 +13,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // what im using to call data from the database
-app.use('./api', routes);
+app.use('/', routes);
 
 db.once('open', () => {
   app.listen(PORT, () => {
